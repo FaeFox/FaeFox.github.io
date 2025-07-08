@@ -1,7 +1,153 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>404 - Page Not Found</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: #0d0d0d;
+      font-family: 'Orbitron', sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      position: relative;
+      padding: 40px;
+      max-width: 700px;
+      background: rgba(10, 10, 10, 0.9);
+      border: 2px solid #1a1a1a;
+      border-radius: 16px;
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+    }
+
+    .glitch-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 0.2rem;
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .glitch-text {
+      position: absolute;
+      top: 0;
+      left: 0;
+      white-space: nowrap;
+      width: 100%;
+      pointer-events: none;
+    }
+
+    .glitch-text.base {
+      position: relative;
+      color: #00ffff;
+      z-index: 0;
+    }
+
+    .glitch-text.layer {
+      z-index: 10;
+      mix-blend-mode: screen;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1rem;
+      margin-bottom: 2rem;
+      color: #ccc;
+    }
+
+    .link-button {
+      display: inline-block;
+      margin: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      background-color: #00ffff;
+      color: #000;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .link-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 12px #00ffff;
+    }
+  </style>
+</head>
 <body>
-<h1>You may have taken a wrong turn</h1>
-<p>Please head to https://hsr.faefox.moe for my Star Rail prefarming sheet, or https://zzz.faefox.moe for my Zenless Zone Zero spreadsheet!</p>
+  <div class="container">
+    <div class="glitch-wrapper" id="glitch-container">
+      <div class="glitch-text base">404: FILE NOT FOUND</div>
+      <h1>Invalid Carrot Data</h1>
+    </div>
+    
+    <p>This page doesn't exist. Choose your destination below:</p>
+    <a href="https://hsr.faefox.moe" class="link-button">Honkai: Star Rail Spreadsheet</a>
+    <a href="https://zzz.faefox.moe" class="link-button">Zenless Zone Zero Spreadsheet</a>
+  </div>
+
+  <script>
+    const glitchContainer = document.getElementById("glitch-container");
+    const baseText = glitchContainer.querySelector(".base");
+
+    const NUM_LAYERS = 8;
+    const slices = [];
+
+    for (let i = 0; i < NUM_LAYERS; i++) {
+      const layer = baseText.cloneNode(true);
+      layer.classList.remove("base");
+      layer.classList.add("layer");
+      glitchContainer.insertBefore(layer, baseText);
+      slices.push(layer);
+    }
+
+    function randomOffset(max) {
+      return Math.floor(Math.random() * (max * 2 + 1)) - max;
+    }
+
+    function applyGlitch(slice) {
+      const dy = randomOffset(1);
+      const dx = randomOffset(5);
+      const top = Math.floor(Math.random() * 90);
+      const height = Math.floor(Math.random() * 10) + 5;
+      const color = ["#ff0040", "#00ffee", "#ffffff"][Math.floor(Math.random() * 3)];
+      const opacity = Math.random() * 0.4 + 0.2;
+
+      slice.style.clipPath = `inset(${top}% 0 ${100 - top - height}% 0)`;
+      slice.style.transform = `translate(${dx}px, ${dy}px)`;
+      slice.style.color = color;
+      slice.style.opacity = opacity.toFixed(2);
+
+      // Random glitch duration
+      setTimeout(() => {
+        slice.style.opacity = "0";
+      }, Math.random() * 400 + 200); // 200–600ms
+    }
+
+    function triggerGlitchLoop() {
+      const glitchCount = Math.floor(Math.random() * (NUM_LAYERS - 2)) + 2;
+      for (let i = 0; i < glitchCount; i++) {
+        const slice = slices[i];
+        setTimeout(() => applyGlitch(slice), Math.random() * 150);
+      }
+
+      setTimeout(triggerGlitchLoop, Math.random() * 750 + 200); // Irregular intervals (0.8s–2.3s)
+    }
+
+    triggerGlitchLoop();
+  </script>
 </body>
 </html>
